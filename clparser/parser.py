@@ -71,7 +71,7 @@ class parser:
 
         return arguments
     
-    def __print_help(self, ap: ActionParam):
+    def __print_help(self):
 
         cmds = ""
         for command_name, d in self.__commands.items():
@@ -89,8 +89,8 @@ class parser:
         # are passed through
         if args[0][-2:] == 'py':
             args = args[1:]
-        
-        if len(args) == 0:
+                
+        if len(args) == 0 or 'help' in args:
             self.__print_help()
             return
         
