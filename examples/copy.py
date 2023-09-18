@@ -18,8 +18,8 @@ def copy_func(ap: ActionParam):
 if __name__ == "__main__":
     p = parser("copy", "Copies a file", "v1.0.0")
 
-	# Adding the command to the
-	# Parser
+    # Adding the command to the
+    # Parser
     p.add_command(
         name="copy",
         desc="Copies file from one place to another",
@@ -27,6 +27,6 @@ if __name__ == "__main__":
         param_list=["file", "dest"],
         action=copy_func
     )
-    
+
     # Executing the Parser
     p.parser(sys.argv)
