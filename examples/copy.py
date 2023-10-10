@@ -1,4 +1,3 @@
-
 import sys
 import shutil
 
@@ -8,7 +7,6 @@ from clparser.types.Command import ActionParam
 
 
 def copy_func(ap: ActionParam):
-    
     # Copy the file from one location to another
     # NOTE: Error handling needed
     shutil.copy(ap.file, ap.dest)
@@ -25,7 +23,7 @@ if __name__ == "__main__":
         desc="Copies file from one place to another",
         usage="copy [file] [dest]",
         param_list=["file", "dest"],
-        action=copy_func
+        action=copy_func,
     )
 
     # Executing the Parser

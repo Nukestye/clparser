@@ -3,7 +3,6 @@ from typing import Callable
 
 
 class CommandMeta:
-
     name: str
     description: str
     usage: str
@@ -19,7 +18,6 @@ class ActionParam:
 
 
 class Command(CommandMeta):
-
     param: list[str]
     param_len: int  # len(param)
 
@@ -40,9 +38,8 @@ class Command(CommandMeta):
         self.action = action
 
     def run(self, *args: tuple) -> bool:
-
-        if len(args) != self.param_len:
-            print(f"Arguments given are {len(args)} but needed {self.param_len}")
+        if len(args[0]) != self.param_len:
+            print(f"Arguments given are {len(args[0])} but needed {self.param_len}")
             return False
 
         # Using the index of each argument
@@ -52,7 +49,7 @@ class Command(CommandMeta):
         ap = ActionParam
 
         for index in range(self.param_len):
-            var = self.param[index]
+            var = self.param[0][index]
 
             regex = re.compile("[\W0-9]")
 
@@ -61,7 +58,13 @@ class Command(CommandMeta):
                 print("Unable to create a variable with numbers/special characters")
                 return False
 
-            setattr(ap, self.param[index], args[index])
+            setattr(ap, self.param[index], args[0][index])
+
+        # NOTE: Flags are not processed
+        # Regardless of the users intention to need arguments
+        # in action function, the flags variable will be set by default
+        # and cannot be changed
+        setattr(ap, "flags", args[1])
 
         self.action(ap)
 
