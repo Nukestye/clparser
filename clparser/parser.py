@@ -6,11 +6,10 @@ from clparser.types.Command import Command
 from clparser.errors.CommandErrors import DuplicateCommandError
 
 
-class parser:
+class Parser:
     # All the commands defined
     # are held in this dictionary
     __commands: dict
-    __flags: dict
 
     def __init__(
         self,
@@ -38,15 +37,6 @@ class parser:
             )
         }
 
-    def add_flag(self, flag_notation: str, command: Command | str = "global") -> None:
-        """
-        Add flag to the command
-
-        :param str flag_notation: the notation used by the user in command line
-        :param Command | str command: The command the flag is linked to,
-        takes either Command or str. Defaults to "global"
-        """
-        pass
 
     def add_command(
         self,
@@ -55,7 +45,7 @@ class parser:
         usage: str,
         param_list: list[str] = None,
         action: Callable = None,
-    ) -> bool:
+    ) -> Command:
         """
 
         Creating a command for the parser to execute.
@@ -68,22 +58,24 @@ class parser:
         :param param_list: the list of the parameters the action needs, eg ["file", "dest"]. Defaults to None
         :param action: the callable action that the command executes. Takes in the params given in param_list.
                        Defaults to None
-        :return: True if the command was created. False if the command wasn't.
+
+        :return: A command object 
+        :rtype: Command
         """
         try:
             if param_list is None:
                 param_list = []
 
-            if name in self.__commands.keys() and not (name == "help"):
+            if name in self.__commands.keys() or (name == "help"):
                 raise DuplicateCommandError(
                     "Please ensure you are not creating a duplicate command!"
                 )
 
-            self.__commands[name] = Command(
-                name=name, desc=desc, usage=usage, args=param_list, action=action
-            )
+            command = Command(name, desc, usage, param_list, action)
 
-            return True
+            self.__commands[name] = command
+
+            return command
 
         except DuplicateCommandError:
             print(
